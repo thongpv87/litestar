@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import dataclasses
+import json
 from dataclasses import replace
 from typing import TYPE_CHECKING, Any, Collection, Generic, TypeVar
 from warnings import warn
