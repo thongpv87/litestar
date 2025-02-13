@@ -72,12 +72,13 @@ if pydantic_v2 is not Empty:  # type: ignore[comparison-overlap]  # pragma: no c
     )
 
 
-def convert_validation_error(validation_error: ValidationErrorV1 | ValidationErrorV2) -> list[dict[str, Any]]:  # pyright: ignore[reportInvalidTypeForm,reportGeneralTypeIssues]
-    error_list = validation_error.errors()
+def convert_validation_error(validation_error: ValidationErrorV1 | ValidationErrorV2) -> list[dict[str, Any]]:
+    error_list = json.loads(validation_error.json())
     for error in error_list:
         if isinstance(exception := error.get("ctx", {}).get("error"), Exception):
-            error["ctx"]["error"] = type(exception).__name__  # pyright: ignore[reportTypedDictNotRequiredAccess]
+            error["ctx"]["error"] = type(exception).__name__   # pyright: ignore[reportTypedDictNotRequiredAccess]
     return error_list  # type: ignore[return-value]
+
 
 
 def downtype_for_data_transfer(field_definition: FieldDefinition) -> FieldDefinition:
